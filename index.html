@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/output.css" />
+    <script defer src="./js/index.js"></script>
     <title>Library</title>
   </head>
   <body class="relative">
@@ -24,7 +25,7 @@
       >
         <div class="flex justify-end">
           <button
-            class="rounded-md bg-slate-200 py-1 px-2 hover:font-bold active:outline"
+            class="close-modal-btn rounded-md bg-slate-200 py-1 px-2 hover:font-bold active:outline"
           >
             X
           </button>
@@ -36,25 +37,32 @@
             type="text"
             name="title"
             id="title-input"
+            value=""
             placeholder=" Title"
+            required
           />
           <input
             class="rounded-sm placeholder:text-gray-500"
             type="text"
             name="author"
             id="author-input"
+            value=""
             placeholder=" Author"
+            required
           />
           <input
             class="rounded-sm placeholder:text-gray-500"
-            type="text"
+            type="number"
             name="pages"
             id="pages-input"
+            value=""
             placeholder=" Pages"
+            min="1"
+            required
           />
           <div class="text-center">
             <span class="mr-2 font-bold">Have you read it?</span
-            ><input type="checkbox" name="read" id="read-input" />
+            ><input type="checkbox" name="read" id="read-input" value="true" />
           </div>
           <button
             class="rounded-md bg-green-500 font-bold hover:bg-green-400 hover:text-gray-700 active:bg-green-600 active:outline"

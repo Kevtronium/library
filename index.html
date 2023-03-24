@@ -18,7 +18,7 @@
         + Add Book
       </button>
     </div>
-    <div class="grid grid-cols-3 gap-8 px-6"></div>
+    <div class="book-container grid grid-cols-3 gap-8 px-6"></div>
     <div class="overlay fixed top-0 hidden h-screen w-full bg-black/40">
       <div
         class="modal fixed top-1/3 left-[42%] flex flex-col rounded-md bg-gray-300 p-6"
@@ -65,7 +65,8 @@
             ><input type="checkbox" name="read" id="read-input" value="true" />
           </div>
           <button
-            class="rounded-md bg-green-500 font-bold hover:bg-green-400 hover:text-gray-700 active:bg-green-600 active:outline"
+            class="submit-btn rounded-md bg-green-500 font-bold hover:bg-green-400 hover:text-gray-700 active:bg-green-600 active:outline"
+            type="submit"
           >
             Submit
           </button>

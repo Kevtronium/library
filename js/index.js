@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
 let myLibrary = [];
 
 function Book(title, author, pages, read) {
@@ -5,6 +6,7 @@ function Book(title, author, pages, read) {
   this.author = author;
   this.pages = pages;
   this.read = read;
+  this.id = `book${uuidv4()}`;
 }
 
 function toggleModal() {
@@ -15,9 +17,9 @@ function toggleModal() {
 function updateBookUI() {
   const bookContainer = document.querySelector('.book-container');
 
-  myLibrary.forEach((book, index) => {
-    if (document.querySelector(`div[data-index='${index}']`) === null) {
-      const bookEle = createBookCard(book, index);
+  myLibrary.forEach((book) => {
+    if (document.getElementById(`${book.id}`) === null) {
+      const bookEle = createBookCard(book);
       bookContainer.appendChild(bookEle);
     }
   });
@@ -76,6 +78,17 @@ const deleteBtnStyles = {
   ],
 };
 
+function removeBook(bookID) {
+  const bookContainer = document.querySelector('.book-container');
+  const bookToRemove = document.querySelector(`#${bookID}`);
+
+  myLibrary = myLibrary.filter((book) => {
+    return book.id !== bookID;
+  });
+  bookContainer.removeChild(bookToRemove);
+  updateBookUI();
+}
+
 function createEle(eleType, text, styles) {
   const ele = document.createElement(eleType);
   ele.textContent = text;
@@ -83,10 +96,10 @@ function createEle(eleType, text, styles) {
   return ele;
 }
 
-function createBookCard(book, index) {
+function createBookCard(book) {
   const bookCard = document.createElement('div');
   bookCard.classList.add(...bookCardStyle.stdStyles);
-  bookCard.dataset.index = index;
+  bookCard.id = book.id;
 
   const title = createEle('p', book.title, textStyles.normal);
   bookCard.appendChild(title);
@@ -112,6 +125,10 @@ function createBookCard(book, index) {
   bookCard.appendChild(editBtn);
 
   const deleteBtn = createEle('button', 'Delete', deleteBtnStyles.stdStyles);
+  deleteBtn.addEventListener('click', (e) => {
+    const bookID = deleteBtn.parentNode.id;
+    removeBook(bookID);
+  });
   bookCard.appendChild(deleteBtn);
 
   return bookCard;

@@ -38,17 +38,16 @@ const bookCardStyle = {
 const textStyles = { normal: ['font-bold'], lastText: ['mb-2', 'font-bold'] };
 const readBtnStyles = {
   basicStyles: [
-    'hover:bg-green:400',
     'mb-2',
     'rounded-md',
     'font-bold',
-    'hover:text-slate-600',
+    'hover:text-slate-700',
     'active:text-slate-900',
     'active:outline',
     'active:outline-4',
   ],
-  read: ['bg-green-500', 'active:bg-green-600'],
-  notRead: ['bg-red-500', 'active:bg-red-600'],
+  read: ['bg-green-500', 'hover:bg-green:400', 'active:bg-green-600'],
+  notRead: ['bg-red-500', 'hover:bg-red-400', 'active:bg-red-600'],
 };
 const editBtnStyles = {
   stdStyles: [
@@ -119,6 +118,19 @@ function createBookCard(book) {
     readBtn.textContent = 'Not read';
     readBtn.classList.add(...readBtnStyles.notRead);
   }
+  readBtn.addEventListener('click', (e) => {
+    const btn = e.target;
+
+    if (btn.classList.contains(readBtnStyles.read[0])) {
+      btn.classList.remove(...readBtnStyles.read);
+      btn.classList.add(...readBtnStyles.notRead);
+      btn.textContent = 'Not Read';
+    } else {
+      btn.classList.remove(...readBtnStyles.notRead);
+      btn.classList.add(...readBtnStyles.read);
+      btn.textContent = 'Read';
+    }
+  });
   bookCard.appendChild(readBtn);
 
   const editBtn = createEle('button', 'Edit', editBtnStyles.stdStyles);

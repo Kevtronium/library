@@ -73,5 +73,64 @@
         </form>
       </div>
     </div>
+    <div class="edit-overlay fixed top-0 hidden h-screen w-full bg-black/40">
+      <div
+        class="edit-modal fixed top-1/3 left-[42%] flex flex-col rounded-md bg-gray-300 p-6"
+      >
+        <div class="flex justify-end">
+          <button
+            class="close-modal-btn--edit rounded-md bg-slate-200 py-1 px-2 hover:font-bold active:outline"
+          >
+            X
+          </button>
+        </div>
+        <h2 class="mb-2 text-center text-lg font-bold">Edit Book</h2>
+        <form class="form--edit flex flex-col space-y-4">
+          <input
+            class="rounded-sm placeholder:text-gray-500"
+            type="text"
+            name="title"
+            id="title-input-edit"
+            value=""
+            placeholder=" Title"
+            required
+          />
+          <input
+            class="rounded-sm placeholder:text-gray-500"
+            type="text"
+            name="author"
+            id="author-input-edit"
+            value=""
+            placeholder=" Author"
+            required
+          />
+          <input
+            class="rounded-sm placeholder:text-gray-500"
+            type="number"
+            name="pages"
+            id="pages-input-edit"
+            value=""
+            placeholder=" Pages"
+            min="1"
+            required
+          />
+          <div class="text-center">
+            <span class="mr-2 font-bold">Have you read it?</span
+            ><input
+              type="checkbox"
+              name="read"
+              id="read-input-edit"
+              value="true"
+            />
+          </div>
+          <button
+            class="submit-btn rounded-md bg-green-500 font-bold hover:bg-green-400 hover:text-gray-700 active:bg-green-600 active:outline"
+            type="submit"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+    </div>
   </body>
 </html>

@@ -9,8 +9,14 @@ function Book(title, author, pages, read) {
   this.id = `book${uuidv4()}`;
 }
 
-function toggleModal() {
-  const overlay = document.querySelector('.overlay');
+function toggleModal(modal) {
+  let modalSelector = '.overlay';
+
+  if (modal === 'edit') {
+    modalSelector = '.edit-overlay';
+  }
+
+  const overlay = document.querySelector(modalSelector);
   overlay.classList.toggle('hidden');
 }
 
@@ -23,6 +29,36 @@ function updateBookUI() {
       bookContainer.appendChild(bookEle);
     }
   });
+}
+
+function updateEditedBookUI(book) {
+  const bookEle = document.querySelector(`#${book.id}`);
+  const textEles = bookEle.querySelectorAll('p');
+  const readBtn = bookEle.querySelector('.read-btn');
+
+  textEles[0].textContent = book.title;
+  textEles[1].textContent = book.author;
+  textEles[2].textContent = book.pages;
+
+  if (book.read) {
+    readBtn.classList.remove(...readBtnStyles.notRead);
+    readBtn.classList.add(...readBtnStyles.read);
+    readBtn.textContent = 'Read';
+  } else {
+    readBtn.classList.remove(...readBtnStyles.read);
+    readBtn.classList.add(...readBtnStyles.notRead);
+    readBtn.textContent = 'Not read';
+  }
+}
+
+function updateEditorUI(book) {
+  const editModal = document.querySelector('.edit-modal');
+
+  editModal.querySelector('#title-input-edit').value = book.title;
+  editModal.querySelector('#author-input-edit').value = book.author;
+  editModal.querySelector('#pages-input-edit').value = book.pages;
+  editModal.querySelector('#read-input-edit').checked = book.read;
+  editModal.querySelector('.form--edit').dataset.bookId = book.id;
 }
 
 const bookCardStyle = {
@@ -38,6 +74,7 @@ const bookCardStyle = {
 const textStyles = { normal: ['font-bold'], lastText: ['mb-2', 'font-bold'] };
 const readBtnStyles = {
   basicStyles: [
+    'read-btn',
     'mb-2',
     'rounded-md',
     'font-bold',
@@ -134,6 +171,14 @@ function createBookCard(book) {
   bookCard.appendChild(readBtn);
 
   const editBtn = createEle('button', 'Edit', editBtnStyles.stdStyles);
+  editBtn.addEventListener('click', (e) => {
+    const bookEle = e.target.parentNode;
+
+    const bookObj = getBookFromLibrary(bookEle.id);
+
+    updateEditorUI(bookObj);
+    toggleModal('edit');
+  });
   bookCard.appendChild(editBtn);
 
   const deleteBtn = createEle('button', 'Delete', deleteBtnStyles.stdStyles);
@@ -148,6 +193,13 @@ function createBookCard(book) {
 
 function addBookToLibrary(newBook) {
   myLibrary.push(newBook);
+}
+
+function getBookFromLibrary(bookID) {
+  const bookIndex = myLibrary.findIndex((book) => book.id === bookID);
+  const book = myLibrary[bookIndex];
+
+  return book;
 }
 
 function resetForm() {
@@ -165,13 +217,22 @@ function resetForm() {
 function initializeBtns() {
   const addBookBtn = document.querySelector('.add-book-btn');
   const closeModalBtn = document.querySelector('.close-modal-btn');
+  const closeEditModalBtn = document.querySelector('.close-modal-btn--edit');
   const form = document.querySelector('form');
+  const editForm = document.querySelector('.form--edit');
 
-  addBookBtn.addEventListener('click', toggleModal);
+  addBookBtn.addEventListener('click', () => {
+    toggleModal('add');
+  });
 
   closeModalBtn.addEventListener('click', () => {
     resetForm();
-    toggleModal();
+    toggleModal('add');
+  });
+
+  closeEditModalBtn.addEventListener('click', () => {
+    resetForm();
+    toggleModal('edit');
   });
 
   form.addEventListener('submit', (e) => {
@@ -190,8 +251,34 @@ function initializeBtns() {
       const newBook = new Book(title, author, pages, read);
       addBookToLibrary(newBook);
       resetForm();
-      toggleModal();
+      toggleModal('add');
       updateBookUI();
+    }
+  });
+
+  editForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const title = document.getElementById('title-input-edit').value;
+    const author = document.getElementById('author-input-edit').value;
+    const pages = document.getElementById('pages-input-edit').value;
+
+    if (title !== '' && author !== '' && pages !== '') {
+      let read = false;
+
+      if (document.getElementById('read-input-edit').checked === true) {
+        read = true;
+      }
+
+      const bookID = editForm.dataset.bookId;
+      const book = getBookFromLibrary(bookID);
+
+      book.title = title;
+      book.author = author;
+      book.read = read;
+
+      resetForm();
+      toggleModal('edit');
+      updateEditedBookUI(book);
     }
   });
 }

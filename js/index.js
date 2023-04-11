@@ -1,12 +1,14 @@
 import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
 let myLibrary = [];
 
-function Book(title, author, pages, read) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
-  this.id = `book${uuidv4()}`;
+class Book {
+  constructor(title, author, pages, read) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+    this.id = `book${uuidv4()}`;
+  }
 }
 
 function toggleModal(modal) {
